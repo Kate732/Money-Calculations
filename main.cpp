@@ -4,16 +4,32 @@ using namespace std;
 
 int CalculateInvetmentMonthly(int current_month) {
     int investment_monthly = 0;
+    if (current_month > 12 && current_month <=24) {
+        investment_monthly = 200;
+        return investment_monthly;
+    }
+    if (current_month > 24) {
+        investment_monthly = 333;
+    }
     switch (current_month)
     {
     case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
         investment_monthly = 50;
+        break;
     case 6:
+    case 7:
+    case 8:
+    case 9:
         investment_monthly = 70;
+        break;
     case 10:
+    case 11:
         investment_monthly = 100;
-    case 12:
-        investment_monthly = 200;
+        break;
     default:
         break;
     }
@@ -23,16 +39,15 @@ int CalculateInvetmentMonthly(int current_month) {
 int CalculateResultMoney(int current_month, int total_time_years, int investment_monthly, const int initial_sum,
     const double percent_from_gov, const double inflation, const double percent_per_year) {
     int result_sum = initial_sum;
-    for (int current_month{}; current_month <= total_time_years * 12; current_month++) //runs each month
+    for (int current_month_i = current_month; current_month_i <= total_time_years * 12; current_month_i++) //runs each month
     {
-        investment_monthly = CalculateInvetmentMonthly(current_month);
+        investment_monthly = CalculateInvetmentMonthly(current_month_i);
         result_sum += investment_monthly;
-        if (current_month % 12 == 0) {
+        if (current_month_i % 12 == 0) {
             result_sum += result_sum * percent_from_gov + result_sum * percent_per_year;
-            result_sum -= result_sum * inflation;
         }
     }
-
+    result_sum -= result_sum * inflation;
     return result_sum;
 }
 
@@ -45,7 +60,7 @@ int main() {
     const double inflation = 0.028;
     const double percent_per_year = 0.045;
     int money_by_the_end = CalculateResultMoney(current_month, total_time_years, investment_monthly, initial_sum, percent_from_gov, inflation, percent_per_year);
-
+    cout << "Current inv, month 2: " << CalculateInvetmentMonthly(2) << endl;
     cout << "Initial investment: " << initial_sum << " pounds." << endl;
     cout << "Scope: " << total_time_years << " years." << endl;
     cout << "Result: " << money_by_the_end << " pounds." << endl;
@@ -72,4 +87,16 @@ result_sum += result_sum * percent_from_gov - (result_sum * percent_from_gov * i
 Initial investment: 1000 pounds.
 Scope: 5 years.
 Result: 7270 pounds.
+*/
+
+/* 
+Initial investment: 1000 pounds.
+Scope: 5 years.
+Result: 7413 pounds.
+*/
+
+/* right investment
+Initial investment: 1000 pounds.
+Scope: 5 years.
+Result: 32660 pounds.
 */
